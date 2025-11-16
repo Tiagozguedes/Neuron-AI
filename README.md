@@ -26,16 +26,22 @@ Este repositório reúne todos os itens exigidos pelo desafio de **Artificial In
 
 ## Como subir a API
 
-1. Confirme que `modelos_neuron_pt.pkl` existe (passo anterior).
-2. Exporte o caminho para o arquivo se quiser usar outro nome/local:
-   ```bash
-   export NEURON_MODEL_PATH=modelos_neuron_pt.pkl
-   ```
-3. Execute a API:
+1. Agora o `api_flask.py` treina automaticamente os modelos se `modelos_neuron_pt.pkl` ainda não existir. Basta garantir que `dados_humor_neuron_pt.csv` esteja na raiz.
+2. Caso já tenha o `.pkl`, apenas execute a API:
    ```bash
    flask --app api_flask run --reload
    # ou
    python api_flask.py
+   ```
+3. Variáveis de ambiente úteis:
+   - `NEURON_MODEL_PATH`: caminho do arquivo `.pkl` (padrão `modelos_neuron_pt.pkl`).
+   - `NEURON_DATASET_PATH`: CSV usado no auto-treinamento (padrão `dados_humor_neuron_pt.csv`).
+   - `NEURON_AUTO_TRAIN`: defina `0`/`false` para desabilitar o treino automático e exigir o `.pkl` pronto.
+4. Para forçar o treino manual (ou ajustar hiperparâmetros), execute:
+   ```bash
+   python treinar_modelos.py \
+     --csv dados_humor_neuron_pt.csv \
+     --saida modelos_neuron_pt.pkl
    ```
 
 ### Endpoints

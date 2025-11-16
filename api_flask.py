@@ -20,6 +20,49 @@ import pickle
 _NON_LETTERS = re.compile(r"[^a-záéíóúâêôãõç\s]")
 
 
+def _env_bool(var_name: str, default: bool = True) -> bool:
+    valor = os.getenv(var_name)
+    if valor is None:
+        return default
+    return valor.strip().lower() not in {"0", "false", "no"}
+
+
+def garantir_modelo(caminho_modelos: Path) -> None:
+    """Treina automaticamente os modelos se o arquivo .pkl ainda não existir."""
+    if caminho_modelos.exists():
+        return
+
+    if not _env_bool("NEURON_AUTO_TRAIN", True):
+        raise FileNotFoundError(
+            f"Arquivo de modelos '{caminho_modelos}' não encontrado. "
+            "Execute `python treinar_modelos.py` manualmente ou habilite o auto-treinamento."
+        )
+
+    dataset_path = Path(os.getenv("NEURON_DATASET_PATH", "dados_humor_neuron_pt.csv"))
+    if not dataset_path.exists():
+        raise FileNotFoundError(
+            f"Arquivo de modelos '{caminho_modelos}' não encontrado e dataset '{dataset_path}' ausente. "
+            "Disponibilize o CSV ou exporte NEURON_DATASET_PATH apontando para ele."
+        )
+
+    try:
+        from treinar_modelos import (
+            baixar_recursos_nltk as baixar_recursos_treino,
+            carregar_dataset,
+            salvar_modelos,
+            treinar_modelos as treinar_pipeline,
+        )
+    except ImportError as exc:
+        raise RuntimeError("Não foi possível importar treinar_modelos.py para o treino automático.") from exc
+
+    print(f"[Neuron] Gerando modelos automaticamente a partir de {dataset_path}...")
+    baixar_recursos_treino()
+    df = carregar_dataset(dataset_path)
+    artefatos = treinar_pipeline(df, max_features=5000, test_size=0.2, random_state=42)
+    salvar_modelos(artefatos, caminho_modelos)
+    print(f"[Neuron] Modelos treinados e salvos em {caminho_modelos}.")
+
+
 def baixar_recursos_nltk() -> None:
     for recurso in ("stopwords", "rslp"):
         try:
@@ -128,10 +171,7 @@ class EmotionService:
 
 def criar_app() -> Flask:
     caminho = Path(os.getenv("NEURON_MODEL_PATH", "modelos_neuron_pt.pkl"))
-    if not caminho.exists():
-        raise FileNotFoundError(
-            f"Arquivo de modelos '{caminho}' não encontrado. Treine com treinar_modelos.py primeiro."
-        )
+    garantir_modelo(caminho)
     service = EmotionService(caminho)
     app = Flask(__name__)
 
