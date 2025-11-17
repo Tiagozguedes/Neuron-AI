@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import os
 import re
 from collections import Counter, defaultdict
@@ -18,6 +17,15 @@ from nltk.stem import RSLPStemmer
 import pickle
 
 _NON_LETTERS = re.compile(r"[^a-záéíóúâêôãõç\s]")
+EMOCAO_TO_SENTIMENTO = {
+    "alegria": "positivo",
+    "amor": "positivo",
+    "surpresa": "positivo",
+    "tristeza": "negativo",
+    "raiva": "negativo",
+    "medo": "negativo",
+}
+_SENTIMENTO_OVERRIDE_THRESHOLD = 0.65
 
 
 def _env_bool(var_name: str, default: bool = True) -> bool:
@@ -25,6 +33,19 @@ def _env_bool(var_name: str, default: bool = True) -> bool:
     if valor is None:
         return default
     return valor.strip().lower() not in {"0", "false", "no"}
+
+
+def _env_float(var_name: str, default: float) -> float:
+    valor = os.getenv(var_name)
+    if valor is None:
+        return default
+    try:
+        return float(valor)
+    except ValueError:
+        return default
+
+
+_SENTIMENTO_OVERRIDE_THRESHOLD = _env_float("NEURON_SENTIMENT_OVERRIDE_THRESHOLD", _SENTIMENTO_OVERRIDE_THRESHOLD)
 
 
 def garantir_modelo(caminho_modelos: Path) -> None:
@@ -95,6 +116,7 @@ class EmotionService:
         self.vectorizer = artefatos["vectorizer"]
         self.modelo_emocao = artefatos["modelo_emocao"]
         self.modelo_sentimento = artefatos["modelo_sentimento"]
+        self.sentimento_threshold = _SENTIMENTO_OVERRIDE_THRESHOLD
 
     def _vectorizar(self, textos: Iterable[str]):
         corpus = [preprocessar_texto(t) for t in textos]
@@ -118,16 +140,38 @@ class EmotionService:
 
         saida = []
         for idx, texto in enumerate(textos):
+            emocao_prevista = emo[idx]
+            sentimento_previsto = sen[idx]
+            sentimento_scores = sen_probs[idx]
+            sentimento_final, sentimento_fonte = self._corrigir_sentimento(
+                emocao_prevista, sentimento_previsto, sentimento_scores
+            )
             saida.append(
                 {
                     "texto": texto,
-                    "emocao": emo[idx],
-                    "sentimento": sen[idx],
+                    "emocao": emocao_prevista,
+                    "sentimento": sentimento_final,
+                    "sentimento_fonte": sentimento_fonte,
                     "emocao_scores": emo_probs[idx],
-                    "sentimento_scores": sen_probs[idx],
+                    "sentimento_scores": sentimento_scores,
                 }
             )
         return saida
+
+    def _corrigir_sentimento(self, emocao: str, sentimento: str, sentimento_scores: Dict[str, float]):
+        """Ajusta sentimento casos de conflito emoção × sentimento."""
+        mapeado = EMOCAO_TO_SENTIMENTO.get(emocao)
+        if not mapeado:
+            return sentimento, "modelo"
+
+        if mapeado == sentimento:
+            return sentimento, "modelo"
+
+        confianca = max(sentimento_scores.values()) if sentimento_scores else 0.0
+        if confianca >= self.sentimento_threshold:
+            return sentimento, "modelo"
+
+        return mapeado, "emocao"
 
     def analisar_conversa(self, mensagens: List[Dict[str, str]]):
         textos = [msg.get("texto", "") for msg in mensagens]
