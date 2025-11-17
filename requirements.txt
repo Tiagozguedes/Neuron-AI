@@ -1,10 +1,11 @@
 # Dependências mínimas para treinar os modelos e servir a API
 Flask==3.0.3
-gunicorn==21.2.0
-nltk==3.8.1
+gunicorn==22.0.0
+
+nltk==3.9.1
+
+scikit-learn==1.4.2
 numpy==1.26.4
-pandas==2.2.3
-scikit-learn==1.5.2
-scipy==1.11.4
+scipy==1.13.1
 joblib==1.4.2
 threadpoolctl==3.5.0
