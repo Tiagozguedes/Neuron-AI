@@ -266,11 +266,8 @@ def criar_app() -> Flask:
         return jsonify(resultado)
 
     @app.post("/conversas/analisar")
-    def endpoint_conversa():
-        return _processar_analise_conversa()
-
     @app.post("/api/v1/analises-emocionais")
-    def endpoint_conversa_alias():
+    def endpoint_conversa():
         return _processar_analise_conversa()
 
     return app
