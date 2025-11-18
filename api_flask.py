@@ -7,7 +7,7 @@ import re
 from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Iterable, List
+from typing import Dict, Iterable, List, Optional
 
 import nltk
 from flask import Flask, jsonify, request
@@ -146,16 +146,21 @@ class EmotionService:
             sentimento_final, sentimento_fonte = self._corrigir_sentimento(
                 emocao_prevista, sentimento_previsto, sentimento_scores
             )
-            saida.append(
-                {
-                    "texto": texto,
-                    "emocao": emocao_prevista,
-                    "sentimento": sentimento_final,
-                    "sentimento_fonte": sentimento_fonte,
-                    "emocao_scores": emo_probs[idx],
-                    "sentimento_scores": sentimento_scores,
-                }
-            )
+            emocao_scores = emo_probs[idx]
+            resultado_sentimento = {
+                "texto": texto,
+                "emocao": emocao_prevista,
+                "emotion": emocao_prevista,
+                "sentimento": sentimento_final,
+                "sentiment": sentimento_final,
+                "sentimento_fonte": sentimento_fonte,
+                "sentiment_source": sentimento_fonte,
+                "emocao_scores": emocao_scores,
+                "emotion_scores": emocao_scores,
+                "sentimento_scores": sentimento_scores,
+                "sentiment_scores": sentimento_scores,
+            }
+            saida.append(resultado_sentimento)
         return saida
 
     def _corrigir_sentimento(self, emocao: str, sentimento: str, sentimento_scores: Dict[str, float]):
@@ -173,7 +178,7 @@ class EmotionService:
 
         return mapeado, "emocao"
 
-    def analisar_conversa(self, mensagens: List[Dict[str, str]]):
+    def analisar_conversa(self, mensagens: List[Dict[str, Optional[str]]]):
         textos = [msg.get("texto", "") for msg in mensagens]
         resultados = self.classificar(textos)
 
@@ -194,6 +199,7 @@ class EmotionService:
                     data_iso = None
 
             registro = {**res, "timestamp": timestamp, "data": data_iso}
+            registro["date"] = registro["data"]
             mensagens_enriquecidas.append(registro)
 
             emocao_total[res["emocao"]] += 1
@@ -202,7 +208,7 @@ class EmotionService:
                 emocao_por_dia[data_iso][res["emocao"]] += 1
                 sentimento_por_dia[data_iso][res["sentimento"]] += 1
 
-        return {
+        resultado = {
             "mensagens": mensagens_enriquecidas,
             "resumo": {
                 "emocao_por_dia": {dia: dict(cont) for dia, cont in emocao_por_dia.items()},
@@ -211,6 +217,10 @@ class EmotionService:
                 "sentimento_total": dict(sentimento_total),
             },
         }
+        # Aliases expected by alguns clientes CLI em inglês.
+        resultado["messages"] = resultado["mensagens"]
+        resultado["summary"] = resultado["resumo"]
+        return resultado
 
 
 def criar_app() -> Flask:
@@ -242,29 +252,61 @@ def criar_app() -> Flask:
 
         return jsonify({"error": "Envie 'texto' ou 'textos'."}), 400
 
-    @app.post("/conversas/analisar")
-    def endpoint_conversa():
+    def _processar_analise_conversa():
         payload = _obter_json()
         if payload is None:
             return jsonify({"error": "JSON inválido"}), 400
 
-        mensagens = payload.get("mensagens")
-        if not isinstance(mensagens, list):
-            return jsonify({"error": "Campo 'mensagens' deve ser uma lista."}), 400
-        if not all(isinstance(m, dict) and "texto" in m for m in mensagens):
-            return jsonify({"error": "Cada mensagem precisa conter ao menos 'texto'."}), 400
+        try:
+            mensagens = _validar_mensagens(payload)
+        except ValueError as exc:
+            return jsonify({"error": str(exc)}), 400
 
         resultado = service.analisar_conversa(mensagens)
         return jsonify(resultado)
+
+    @app.post("/conversas/analisar")
+    def endpoint_conversa():
+        return _processar_analise_conversa()
+
+    @app.post("/api/v1/analises-emocionais")
+    def endpoint_conversa_alias():
+        return _processar_analise_conversa()
 
     return app
 
 
 def _obter_json():
     try:
-        return request.get_json(force=True)
+        return request.get_json(silent=True)
     except Exception:
         return None
+
+
+def _validar_mensagens(payload: Dict) -> List[Dict[str, Optional[str]]]:
+    mensagens = payload.get("mensagens")
+    if not isinstance(mensagens, list):
+        raise ValueError("Campo 'mensagens' deve ser uma lista.")
+
+    mensagens_validas: List[Dict[str, Optional[str]]] = []
+    for idx, mensagem in enumerate(mensagens, start=1):
+        if not isinstance(mensagem, dict):
+            raise ValueError(f"Mensagem #{idx} deve ser um objeto JSON.")
+
+        texto = mensagem.get("texto")
+        if not isinstance(texto, str) or not texto.strip():
+            raise ValueError(f"Mensagem #{idx} precisa conter 'texto' (string não vazia).")
+
+        timestamp = mensagem.get("timestamp")
+        if timestamp is not None and not isinstance(timestamp, str):
+            raise ValueError(f"Campo 'timestamp' da mensagem #{idx} deve ser string ISO 8601.")
+
+        msg_limpo: Dict[str, Optional[str]] = dict(mensagem)
+        msg_limpo["texto"] = texto
+        msg_limpo["timestamp"] = timestamp
+        mensagens_validas.append(msg_limpo)
+
+    return mensagens_validas
 
 
 app = criar_app()
