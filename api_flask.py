@@ -7,7 +7,7 @@ import re
 from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 import nltk
 from flask import Flask, jsonify, request
@@ -235,27 +235,39 @@ def criar_app() -> Flask:
 
     @app.post("/classificar")
     def endpoint_classificar():
-        payload = _obter_json()
-        if payload is None:
-            return jsonify({"error": "JSON inválido"}), 400
+        payload, erro = _obter_payload()
+        if erro:
+            return jsonify({"error": erro}), 400
 
         if "texto" in payload:
-            resultado = service.classificar([payload["texto"]])
+            texto = payload["texto"]
+            if not isinstance(texto, str) or not texto.strip():
+                return jsonify({"error": "Campo 'texto' deve ser uma string não vazia."}), 400
+            resultado = service.classificar([texto])
             return jsonify(resultado[0])
 
         if "textos" in payload:
             textos = payload["textos"]
-            if not isinstance(textos, list) or not all(isinstance(t, str) for t in textos):
-                return jsonify({"error": "Campo 'textos' deve ser lista de strings."}), 400
-            resultado = service.classificar(textos)
+            if not isinstance(textos, list):
+                return jsonify({"error": "Campo 'textos' deve ser uma lista."}), 400
+            if not textos:
+                return jsonify({"error": "Campo 'textos' não pode estar vazio."}), 400
+
+            textos_validos: List[str] = []
+            for idx, texto in enumerate(textos, start=1):
+                if not isinstance(texto, str) or not texto.strip():
+                    return jsonify({"error": f"Texto #{idx} deve ser uma string não vazia."}), 400
+                textos_validos.append(texto)
+
+            resultado = service.classificar(textos_validos)
             return jsonify({"resultados": resultado})
 
         return jsonify({"error": "Envie 'texto' ou 'textos'."}), 400
 
     def _processar_analise_conversa():
-        payload = _obter_json()
-        if payload is None:
-            return jsonify({"error": "JSON inválido"}), 400
+        payload, erro = _obter_payload()
+        if erro:
+            return jsonify({"error": erro}), 400
 
         try:
             mensagens = _validar_mensagens(payload)
@@ -273,14 +285,23 @@ def criar_app() -> Flask:
     return app
 
 
-def _obter_json():
+def _obter_payload() -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    """Lê o corpo JSON e garante que é um objeto."""
     try:
-        return request.get_json(silent=True)
+        conteudo = request.get_json(silent=True)
     except Exception:
-        return None
+        return None, "JSON inválido."
+
+    if conteudo is None:
+        return None, "JSON inválido."
+    if not isinstance(conteudo, dict):
+        return None, "Corpo da requisição deve ser um objeto JSON."
+    return conteudo, None
 
 
 def _validar_mensagens(payload: Dict) -> List[Dict[str, Optional[str]]]:
+    # As validações abaixo espelham o contrato de payload aceito pela CLI
+    # neuron, retornando mensagens claras em português.
     mensagens = payload.get("mensagens")
     if not isinstance(mensagens, list):
         raise ValueError("Campo 'mensagens' deve ser uma lista.")
