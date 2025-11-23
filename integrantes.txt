@@ -1,0 +1,4 @@
+# Preencha com os integrantes do grupo (Nome completo – RM – papel)
+Nome 1 – RM000000 – Papel (ex.: ML Engineer)
+Nome 2 – RM000000 – Papel (ex.: Dev Backend)
+Nome 3 – RM000000 – Papel (ex.: Product Owner)

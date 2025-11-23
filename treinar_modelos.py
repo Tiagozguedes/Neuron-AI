@@ -7,6 +7,7 @@ import json
 import pickle
 import re
 from pathlib import Path
+from typing import Dict, Any
 
 import nltk
 import pandas as pd
@@ -29,7 +30,7 @@ EMOCAO_TO_SENTIMENTO = {
 
 
 def baixar_recursos_nltk() -> None:
-    """Garante que os recursos necessários do NLTK estejam disponíveis."""
+    """Baixa stopwords e stemmer do NLTK, garantindo que o pipeline funcione em máquinas limpas."""
     for recurso in ("stopwords", "rslp"):
         try:
             nltk.data.find(f"corpora/{recurso}")
@@ -38,7 +39,14 @@ def baixar_recursos_nltk() -> None:
 
 
 def preprocessar_texto(texto: str, stopwords_custom=None) -> str:
-    """Limpa, remove stopwords e aplica stemming em PT-BR."""
+    """
+    Normaliza um texto em português para alimentar o modelo.
+
+    - Converte para minúsculas.
+    - Remove caracteres não alfabéticos.
+    - Remove stopwords (português) e opcionais customizadas.
+    - Aplica stemming via RSLP.
+    """
     if not isinstance(texto, str):
         return ""
 
@@ -57,6 +65,11 @@ def preprocessar_texto(texto: str, stopwords_custom=None) -> str:
 
 
 def carregar_dataset(caminho: Path) -> pd.DataFrame:
+    """
+    Lê o CSV de humor em PT-BR e gera colunas derivadas:
+    - sentimento (mapa de emoção → positivo/negativo)
+    - texto_limpo (pré-processado para o vetor TF-IDF)
+    """
     df = pd.read_csv(caminho)
     obrigatorias = {"texto", "emocao"}
     if not obrigatorias.issubset(df.columns):
@@ -68,22 +81,26 @@ def carregar_dataset(caminho: Path) -> pd.DataFrame:
     return df
 
 
-def treinar_modelos(df: pd.DataFrame, max_features: int, test_size: float, random_state: int):
-    X_train, X_test, y_train_e, y_test_e = train_test_split(
-        df["texto_limpo"],
-        df["emocao"],
+def treinar_modelos(df: pd.DataFrame, max_features: int, test_size: float, random_state: int) -> Dict[str, Any]:
+    """
+    Treina dois modelos supervisionados (emoção e sentimento) usando TF-IDF + Logistic Regression.
+
+    Retorna um dicionário com vetorizador, modelos e métricas para persistência posterior.
+    """
+    # Um único split mantém os mesmos exemplos para emoção e sentimento.
+    train_idx, test_idx = train_test_split(
+        df.index,
         test_size=test_size,
         random_state=random_state,
         stratify=df["emocao"],
     )
 
-    _, _, y_train_s, y_test_s = train_test_split(
-        df["texto_limpo"],
-        df["sentimento"],
-        test_size=test_size,
-        random_state=random_state,
-        stratify=df["sentimento"],
-    )
+    X_train = df.loc[train_idx, "texto_limpo"]
+    X_test = df.loc[test_idx, "texto_limpo"]
+    y_train_e = df.loc[train_idx, "emocao"]
+    y_test_e = df.loc[test_idx, "emocao"]
+    y_train_s = df.loc[train_idx, "sentimento"]
+    y_test_s = df.loc[test_idx, "sentimento"]
 
     vectorizer = TfidfVectorizer(max_features=max_features)
     X_train_vec = vectorizer.fit_transform(X_train)
@@ -109,7 +126,8 @@ def treinar_modelos(df: pd.DataFrame, max_features: int, test_size: float, rando
     return artefatos
 
 
-def gerar_metricas(modelo, X_test, y_true):
+def gerar_metricas(modelo, X_test, y_true) -> Dict[str, Any]:
+    """Gera acurácia e classification_report do sklearn como dicionário."""
     y_pred = modelo.predict(X_test)
     return {
         "accuracy": float(accuracy_score(y_true, y_pred)),
@@ -118,6 +136,7 @@ def gerar_metricas(modelo, X_test, y_true):
 
 
 def salvar_modelos(artefatos, caminho: Path) -> None:
+    """Persiste vetor, modelos e métricas em um único arquivo .pkl para servir na API."""
     with open(caminho, "wb") as f:
         pickle.dump(artefatos, f)
 

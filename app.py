@@ -1,1 +1,0 @@
-from api_flask import app  # importa a variável "app" de dentro do api_flask.py

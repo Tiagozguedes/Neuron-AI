@@ -49,7 +49,12 @@ _SENTIMENTO_OVERRIDE_THRESHOLD = _env_float("NEURON_SENTIMENT_OVERRIDE_THRESHOLD
 
 
 def garantir_modelo(caminho_modelos: Path) -> None:
-    """Treina automaticamente os modelos se o arquivo .pkl ainda não existir."""
+    """
+    Treina automaticamente os dois modelos (emoção e sentimento) se o arquivo .pkl não existir.
+
+    - Usa o CSV `dados_humor_neuron_pt.csv` (ou NEURON_DATASET_PATH) como fonte.
+    - Gera e persiste `modelos_neuron_pt.pkl` na raiz, pronto para ser servido pela API.
+    """
     if caminho_modelos.exists():
         return
 
@@ -93,6 +98,11 @@ def baixar_recursos_nltk() -> None:
 
 
 def preprocessar_texto(texto: str) -> str:
+    """
+    Limpa e normaliza texto em português para consumo pelo modelo.
+
+    Remove caracteres não alfabéticos, stopwords e aplica stemming RSLP.
+    """
     if not isinstance(texto, str):
         return ""
     texto = texto.lower()
@@ -106,7 +116,10 @@ def preprocessar_texto(texto: str) -> str:
 
 
 class EmotionService:
-    """Encapsula o carregamento dos modelos e as previsões."""
+    """
+    Serviço de inferência: carrega vetorizador e dois modelos (emoção + sentimento)
+    para expor métodos de classificação usados pela API REST da FIAP.
+    """
 
     def __init__(self, caminho_modelos: Path) -> None:
         baixar_recursos_nltk()
@@ -131,6 +144,7 @@ class EmotionService:
         return resultados
 
     def classificar(self, textos: List[str]):
+        """Classifica lista de textos, retornando emoção, sentimento e scores normalizados."""
         matriz = self._vectorizar(textos)
         emo = self.modelo_emocao.predict(matriz)
         emo_probs = self._probabilidades(self.modelo_emocao, matriz)
@@ -164,7 +178,7 @@ class EmotionService:
         return saida
 
     def _corrigir_sentimento(self, emocao: str, sentimento: str, sentimento_scores: Dict[str, float]):
-        """Ajusta sentimento casos de conflito emoção × sentimento."""
+        """Ajusta sentimento quando há conflito com a emoção prevista usando limiar configurável."""
         mapeado = EMOCAO_TO_SENTIMENTO.get(emocao)
         if not mapeado:
             return sentimento, "modelo"
@@ -179,6 +193,11 @@ class EmotionService:
         return mapeado, "emocao"
 
     def analisar_conversa(self, mensagens: List[Dict[str, Optional[str]]]):
+        """
+        Classifica lote de mensagens e gera resumos agregados por dia e total.
+
+        Útil para painéis de gestores/RH que só consomem dados anonimizados.
+        """
         textos = [msg.get("texto", "") for msg in mensagens]
         resultados = self.classificar(textos)
 
@@ -228,6 +247,7 @@ def criar_app() -> Flask:
     garantir_modelo(caminho)
     service = EmotionService(caminho)
     app = Flask(__name__)
+    # API REST exigida pela entrega FIAP (healthcheck, classificação e análise de conversas).
 
     @app.get("/health")
     def health():
@@ -286,7 +306,7 @@ def criar_app() -> Flask:
 
 
 def _obter_payload() -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
-    """Lê o corpo JSON e garante que é um objeto."""
+    """Lê o corpo JSON e garante que é um objeto, retornando mensagem de erro amigável em PT-BR."""
     try:
         conteudo = request.get_json(silent=True)
     except Exception:
@@ -300,8 +320,10 @@ def _obter_payload() -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
 
 
 def _validar_mensagens(payload: Dict) -> List[Dict[str, Optional[str]]]:
-    # As validações abaixo espelham o contrato de payload aceito pela CLI
-    # neuron, retornando mensagens claras em português.
+    """
+    Valida o contrato do endpoint de conversas, retornando mensagens claras em português.
+    Mantém compatibilidade com a CLI interna.
+    """
     mensagens = payload.get("mensagens")
     if not isinstance(mensagens, list):
         raise ValueError("Campo 'mensagens' deve ser uma lista.")
