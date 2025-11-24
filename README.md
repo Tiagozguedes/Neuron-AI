@@ -1,4 +1,5 @@
 # Neuron AI – Motor emocional da plataforma Neuron
+Link do Repositório: https://github.com/Tiagozguedes/Neuron-AI.git
 
 ## 1. Visão geral do projeto
 - Problema: burnout, ansiedade e estresse corporativo sem ferramentas éticas para monitorar bem-estar.
@@ -98,3 +99,4 @@
 - Estrutura simples: duas colunas.
 - `texto`: é a frase que alguém realmente escreveria no dia a dia (“Hoje o time está bem animado...”). Quanto mais variedade de situações, gírias e tons, melhor o modelo aprende a “entender” como as pessoas se expressam.
 - `emocao`: é a emoção que queremos que o modelo reconheça ao ler o texto (`alegria`, `amor`, `surpresa`, `tristeza`, `raiva`, `medo`). Essa coluna ensina o modelo a sentir; se ela estiver bem distribuída e consistente, a IA acerta mais tanto na emoção quanto no sentimento derivado.
+
