@@ -93,3 +93,8 @@
 ## 10. Itens a não incluir no .zip de entrega
 - Consulte `DEV_NOTES.md` para a lista detalhada (ex.: .venv, __pycache__, logs, arquivos temporários de IDE).  
 - Mantenha os artefatos obrigatórios listados na seção 3.
+
+## 11. Dataset `dados_humor_neuron_pt.csv` (o que cada coluna significa)
+- Estrutura simples: duas colunas.
+- `texto`: é a frase que alguém realmente escreveria no dia a dia (“Hoje o time está bem animado...”). Quanto mais variedade de situações, gírias e tons, melhor o modelo aprende a “entender” como as pessoas se expressam.
+- `emocao`: é a emoção que queremos que o modelo reconheça ao ler o texto (`alegria`, `amor`, `surpresa`, `tristeza`, `raiva`, `medo`). Essa coluna ensina o modelo a sentir; se ela estiver bem distribuída e consistente, a IA acerta mais tanto na emoção quanto no sentimento derivado.
