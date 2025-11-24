@@ -4,3 +4,9 @@ Gabriel Duarte Maciel - RM: 565754
 Tiago Guedes da Costa - RM: 564731 
 Turma: 1TDSPW
 
+# Nota da pasta tests:
+# A pasta tests/ está incluída para smoketests automáticos:
+# - Pré-processamento em PT-BR.
+# - Treino dos dois modelos (emoção e sentimento) gera vetorizador + métricas.
+# - Endpoints da API (health, classificar e analisar conversas).
+# Facilita rodar e corrigir rapidamente sem abrir o notebook.
