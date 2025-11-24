@@ -1,73 +1,250 @@
 texto,emocao
-Hoje o time está bem animado com o resultado da sprint.,alegria
-Fiquei muito feliz com o feedback positivo do cliente.,alegria
-Estou empolgado com as novas funcionalidades que vamos lançar.,alegria
-O clima na empresa hoje está leve e divertido.,alegria
-"Adorei participar da reunião de brainstorming, foi inspirador.",alegria
-Me senti realizado depois de concluir essa entrega importante.,alegria
-Foi ótimo ver o reconhecimento do nosso esforço na daily.,alegria
-As mensagens de agradecimento da equipe me deixaram muito contente.,alegria
-Hoje estou me sentindo cansado e desmotivado com o trabalho.,tristeza
-Fiquei chateado com a forma como a reunião terminou.,tristeza
-Estou triste por não ter conseguido cumprir o prazo.,tristeza
-Sinto que meu esforço não está sendo valorizado ultimamente.,tristeza
-O clima hoje está pesado e isso me deixa abatido.,tristeza
-Fiquei desapontado com o resultado do nosso projeto piloto.,tristeza
-Senti uma certa frustração com os comentários sobre meu desempenho.,tristeza
-É desanimador ver que os mesmos problemas continuam acontecendo.,tristeza
-Fiquei com muita raiva da forma como o problema foi tratado.,raiva
-Estou irritado com a quantidade de retrabalho nesta tarefa.,raiva
-Me incomoda muito quando as decisões são tomadas sem diálogo.,raiva
-Sinto muita irritação com a falta de organização do processo.,raiva
-Fiquei bravo com a falta de respeito com o horário combinado.,raiva
-Me senti injustiçado com a crítica que recebi hoje.,raiva
-É revoltante ver o mesmo erro sendo repetido de novo.,raiva
-Estou de saco cheio dessas mudanças em cima da hora.,raiva
-Estou preocupado com o prazo apertado deste projeto.,medo
-Tenho medo de não conseguir entregar tudo o que foi combinado.,medo
-Fico inseguro quando mudam o escopo sem planejamento.,medo
-Sinto um certo receio de apresentar esses resultados para a diretoria.,medo
-Estou tenso com a possibilidade de perder esse cliente importante.,medo
-Me preocupa o impacto dessa falha na imagem da equipe.,medo
-Tenho dúvidas se vamos conseguir manter esse ritmo por muito tempo.,medo
-Fico apreensivo quando vejo tantas tarefas acumuladas.,medo
-"Gosto muito de trabalhar com essa equipe, me sinto acolhido.",amor
-Me sinto cuidado quando meus colegas perguntam como eu estou.,amor
-"Tenho muito carinho pelo nosso time, somos bem unidos.",amor
-"Admiro demais o esforço de todos, isso me motiva a dar o meu melhor.",amor
-É gratificante ver como apoiamos uns aos outros.,amor
-Sinto orgulho de fazer parte dessa empresa.,amor
-Tenho respeito e admiração pelo meu líder.,amor
-É muito bom sentir confiança nas pessoas com quem trabalho.,amor
-Fiquei surpreso com o resultado da pesquisa de clima.,surpresa
-Não esperava receber tantos elogios na retrospectiva.,surpresa
-Foi uma surpresa muito boa ver a reação do cliente.,surpresa
-Me surpreendi com a rapidez da nossa entrega.,surpresa
-Não imaginava que a solução funcionaria tão bem assim.,surpresa
-Fiquei impressionado com o nível de engajamento da equipe.,surpresa
-Foi inesperado ver a diretoria reconhecer nosso trabalho publicamente.,surpresa
-Me pegou de surpresa o anúncio do novo projeto.,surpresa
-Estou satisfeito com a evolução do nosso produto.,alegria
-Ver a equipe comemorando cada entrega me deixa animado.,alegria
-Receber elogios dos usuários foi incrível.,alegria
-A energia da equipe hoje está contagiante.,alegria
-Sinto gratidão por trabalhar com pessoas tão parceiras.,amor
-Percebo cuidado quando revisam meu trabalho com atenção.,amor
-A confiança mútua que temos faz tudo valer a pena.,amor
-Gosto de como nos apoiamos mesmo nos dias difíceis.,amor
-Me surpreendi com a rapidez da correção do bug crítico.,surpresa
-Não esperava que a apresentação fosse tão bem recebida.,surpresa
-Foi chocante ver o cliente aprovar tudo de primeira.,surpresa
-A reação positiva da diretoria foi inesperada.,surpresa
-Me sinto esgotado depois de tantas horas extras.,tristeza
-É frustrante ver o esforço não gerar reconhecimento.,tristeza
-Fiquei abatido após a reunião cheia de críticas.,tristeza
-Dói ver colegas desmotivados com o projeto.,tristeza
-Perdi a paciência com as mudanças sem aviso.,raiva
-A falta de planejamento me deixa irritado.,raiva
-Fico furioso quando ignoram os riscos que apontamos.,raiva
-Me revolta ter que refazer tarefas por descuido alheio.,raiva
-Tenho receio de que o projeto saia do controle do orçamento.,medo
-Sinto insegurança com as novas metas agressivas.,medo
-Fico nervoso com a possibilidade de cortes na equipe.,medo
-Me preocupa não ter tempo para testes antes do lançamento.,medo
+Acordei animado para colaborar com o time,alegria
+Entreguei uma tarefa difícil e me senti realizado,alegria
+Recebi elogios sinceros do time e fiquei radiante,alegria
+O clima na daily estava leve e divertido,alegria
+Terminei o sprint antes do prazo e comemorei,alegria
+Achei a solução elegante e isso me deixou feliz,alegria
+O reconhecimento no canal interno me motivou muito,alegria
+Senti orgulho do nosso produto hoje,alegria
+A reunião terminou com risadas e energia boa,alegria
+Os testes passaram de primeira e vibrei,alegria
+O cliente adorou a demo e celebrou com a gente,alegria
+O time se ajudou e tudo fluiu bem,alegria
+A colaboração hoje foi impecável,alegria
+Fiquei contente com o feedback construtivo,alegria
+A vibe no escritório estava contagiante,alegria
+Recebi um obrigado que fez meu dia,alegria
+Aprendi algo novo e fiquei empolgado,alegria
+A integração funcionou e o time aplaudiu,alegria
+Foi ótimo ver todos engajados,alegria
+A conversa foi leve e produtiva,alegria
+Tive espaço para criar e isso me alegrou,alegria
+Conseguimos reduzir bugs e comemorar,alegria
+A confiança do gestor me deixou feliz,alegria
+O par programming hoje foi inspirador,alegria
+Senti entusiasmo ao ver o progresso,alegria
+Adorei o workshop interno,alegria
+A retro trouxe ideias positivas,alegria
+A cultura de apoio aqui me faz bem,alegria
+Planejamos bem e saí animado,alegria
+Consegui ajudar um colega e fiquei satisfeito,alegria
+A jornada hoje foi leve,alegria
+Recebi um café surpresa e sorri,alegria
+Ver o roadmap claro me deixou animado,alegria
+O deploy limpo foi motivo de festa,alegria
+O time celebrou pequenas vitórias,alegria
+A confiança mútua me alegra,alegria
+A troca de aprendizados foi gostosa,alegria
+Senti alegria em resolver um bug chato,alegria
+A energia do grupo estava lá em cima,alegria
+Terminei o dia grato e feliz,alegria
+O ambiente acolhedor me deixa alegre,alegria
+O suporte rápido do colega me animou,alegria
+Senti orgulho da nossa entrega,alegria
+Me emocionei com o apoio do time,amor
+Admiro a dedicação de cada pessoa aqui,amor
+Sinto carinho pelo time que construímos,amor
+Quero retribuir o cuidado que recebo,amor
+Tenho afeto pela cultura que criamos,amor
+Respeito profundo pelo esforço de todos,amor
+Sinto gratidão genuína pela parceria,amor
+Gosto de como nos cuidamos,amor
+Vejo bondade nas pequenas atitudes,amor
+A forma como escutam me toca,amor
+Valorizo cada gesto de apoio,amor
+Me sinto acolhido como em família,amor
+A empatia do grupo me inspira,amor
+Sinto conexão verdadeira com a equipe,amor
+Agradeço o ombro amigo nas horas difíceis,amor
+A confiança que depositam em mim é preciosa,amor
+Me importo em fazer o melhor por eles,amor
+Percebo amor pelo trabalho bem feito,amor
+Gosto de como celebramos juntos,amor
+Me sinto visto e isso aquece o coração,amor
+A gentileza diária me motiva,amor
+É bonito ver cuidado nos detalhes,amor
+Sinto respeito mútuo em cada conversa,amor
+Tenho vontade de proteger esse time,amor
+Acolheram minhas ideias com carinho,amor
+Sinto lealdade por quem caminha comigo,amor
+Valorizo a paciência que têm comigo,amor
+A colaboração aqui tem afeto,amor
+Sinto que posso contar com todos,amor
+Fiquei tocado com a ajuda recebida,amor
+A presença de cada um me importa,amor
+O jeito que corrigem com cuidado me cativa,amor
+Gosto de como falam com doçura,amor
+Sinto calor humano nas reuniões,amor
+Admiração e carinho andam juntos aqui,amor
+O time me inspira a ser melhor,amor
+Sinto afeição pelos colegas,amor
+Gosto de retribuir o cuidado,amor
+A lealdade do grupo é comovente,amor
+A confiança construída é valiosa,amor
+Me surpreendi com a solução elegante,surpresa
+Não esperava que o deploy fosse tão suave,surpresa
+Fiquei surpreso com a velocidade do time,surpresa
+A reação do cliente me deixou boquiaberto,surpresa
+Achei incrível como simplificamos o problema,surpresa
+Não imaginei que a ideia funcionaria tão bem,surpresa
+A ajuda inesperada mudou o jogo,surpresa
+O resultado superou minhas expectativas,surpresa
+Nunca pensei que rodaria tão rápido,surpresa
+A descoberta de um bug raro me surpreendeu,surpresa
+Recebi um elogio inesperado,surpresa
+A solução criativa me pegou de surpresa,surpresa
+A demo ficou melhor do que planejei,surpresa
+Fiquei admirado com o refinamento,surpresa
+A facilidade de uso me surpreendeu,surpresa
+O teste passou sem ajustes e foi incrível,surpresa
+Não esperava aderência tão alta dos usuários,surpresa
+O brainstorm trouxe ideias inusitadas,surpresa
+A integração foi mais simples que o previsto,surpresa
+Vi um ganho de performance inesperado,surpresa
+A clareza do feedback me surpreendeu,surpresa
+O time respondeu muito rápido,surpresa
+Descobri um atalho que agilizou tudo,surpresa
+Um colega trouxe uma solução genial,surpresa
+A mudança teve impacto imediato,surpresa
+O cliente pediu mais recursos de forma positiva,surpresa
+A análise de dados trouxe um insight novo,surpresa
+A curva de aprendizado foi menor que pensei,surpresa
+O onboarding fluiu surpreendentemente bem,surpresa
+A review foi bem mais tranquila,surpresa
+O bug sumiu com uma correção simples,surpresa
+O usuário elogiou o fluxo sem ser provocado,surpresa
+A interface ficou mais intuitiva do que imaginei,surpresa
+Não esperava tanta colaboração hoje,surpresa
+O experimento deu certo de primeira,surpresa
+Me espantei com o engajamento,surpresa
+O teste A B trouxe um vencedor claro,surpresa
+O roadmap encaixou melhor que o previsto,surpresa
+A automação reduziu muito o retrabalho,surpresa
+O risco que temíamos não se confirmou,surpresa
+A refatoração foi mais suave que o esperado,surpresa
+Os logs mostraram um cenário melhor,surpresa
+Me sinto abatido com tantas tarefas,tristeza
+Fiquei desanimado com o atraso,tristeza
+Me frustrei por não entregar o que queria,tristeza
+Senti que poderia ter feito melhor,tristeza
+A falta de reconhecimento me deixou triste,tristeza
+Estou desapontado com o resultado,tristeza
+O retrabalho me desmotivou,tristeza
+Senti um vazio depois da reunião tensa,tristeza
+Achei que falhei com o time,tristeza
+Estou chateado com a falta de progresso,tristeza
+A crítica dura me deixou abalado,tristeza
+Senti peso ao ver o backlog crescer,tristeza
+O silêncio na reunião me entristeceu,tristeza
+Me senti sozinho no problema,tristeza
+Perdi energia após tantas mudanças,tristeza
+A entrega incompleta me afetou,tristeza
+Não consegui ajudar como queria,tristeza
+Fiquei triste por ver o esforço ignorado,tristeza
+A tensão constante me desgasta,tristeza
+Senti desânimo ao rever os erros,tristeza
+O clima pesado tirou minha vontade,tristeza
+Me entristece atrasar o time,tristeza
+Senti falta de apoio hoje,tristeza
+A meta distante me desanima,tristeza
+Estou abatido com a pressão,tristeza
+A falta de clareza me deixa triste,tristeza
+Me senti impotente diante do problema,tristeza
+O feedback ríspido me machucou,tristeza
+O cansaço acumulado me entristece,tristeza
+Senti que decepcionei o cliente,tristeza
+A falha em produção me derrubou,tristeza
+Triste por não ver avanço,tristeza
+O esforço sem resultado me abala,tristeza
+Fiquei pra baixo após a discussão,tristeza
+A falta de tempo me frustra,tristeza
+O caos no projeto me entristece,tristeza
+Senti melancolia ao rever o sprint,tristeza
+A sensação de estagnação me pesa,tristeza
+Me dói ver retrabalho constante,tristeza
+Senti tristeza com a saída de um colega,tristeza
+O feedback negativo repetido me abate,tristeza
+A cobrança excessiva me deixa triste,tristeza
+Fiquei irritado com a demora da aprovação,raiva
+A burocracia me deixou furioso,raiva
+Senti raiva do erro que voltou,raiva
+Fiquei bravo com a falta de compromisso,raiva
+Explodi ao ver o mesmo bug de novo,raiva
+A reunião improdutiva me irritou,raiva
+Me irritei com a comunicação truncada,raiva
+Fiquei de mau humor com o atraso,raiva
+O descaso com testes me enfureceu,raiva
+A falta de respeito no debate me revoltou,raiva
+Estou impaciente com a lentidão,raiva
+A ausência de dono no problema me irrita,raiva
+Senti raiva de perder tempo,raiva
+Fiquei tenso com a pressão injusta,raiva
+A priorização mudou sem aviso e me irritou,raiva
+Senti frustração intensa com o retrabalho,raiva
+A desorganização me deixa nervoso,raiva
+Fiquei zangado com a falta de preparo,raiva
+A resposta evasiva me deixou irritado,raiva
+O microgerenciamento me incomoda,raiva
+Estou irritado com interrupções constantes,raiva
+A falta de alinhamento me enfurece,raiva
+Fiquei bravo com a quebra de acordo,raiva
+A cobrança sem contexto me irrita,raiva
+Senti raiva da falta de teste,raiva
+A ironia na reunião me tirou do sério,raiva
+Estou cansado de promessas vazias,raiva
+A culpa jogada sem análise me irritou,raiva
+Me exasperei com a falta de documentação,raiva
+A instabilidade recorrente me deixa nervoso,raiva
+Senti fúria com o desrespeito ao prazo,raiva
+A falta de foco me incomoda muito,raiva
+Fiquei irritado com a mudança de escopo,raiva
+A passividade diante do bug me irritou,raiva
+Me incomoda a falta de transparência,raiva
+Fiquei bravo com a demora na decisão,raiva
+A revisão áspera me deixou irritado,raiva
+A falta de backup me enfureceu,raiva
+Senti raiva da má comunicação,raiva
+Fiquei inquieto com o silêncio do time,medo
+Tenho receio de não alcançar o prazo,medo
+Sinto medo de quebrar produção,medo
+Fiquei apreensivo com a mudança repentina,medo
+Temo que falte cobertura de testes,medo
+Preocupa-me a dependência sem dono,medo
+Fiquei com medo de perder dados,medo
+Estou inseguro sobre a solução,medo
+Temo decepcionar o cliente,medo
+Preocupado com o impacto do bug,medo
+Senti ansiedade com a apresentação,medo
+Tenho medo de não corresponder,medo
+A incerteza do escopo me assusta,medo
+Estou receoso com a complexidade,medo
+Temo falhar diante do time,medo
+A falta de plano B me preocupa,medo
+Sinto apreensão com a auditoria,medo
+Tenho medo de causar regressão,medo
+Preocupa-me a falta de monitoramento,medo
+Senti medo de ser julgado,medo
+A pressão por resultado me assusta,medo
+Fiquei tenso com o deploy urgente,medo
+Temo que a solução não escale,medo
+Sinto insegurança no ambiente instável,medo
+Preocupado com a carga extra,medo
+Tenho medo de não ter suporte,medo
+A falta de clareza me deixa inseguro,medo
+Senti apreensão com a migração,medo
+Temo não dar conta das tarefas,medo
+Preocupado com possíveis falhas,medo
+Sinto medo de errar na estimativa,medo
+A responsabilidade alta me assusta,medo
+Temo perder a confiança do time,medo
+Fiquei com receio após o incidente,medo
+Preocupa-me a ausência de testes,medo
+Sinto ansiedade com o backlog,medo
+Temo não conseguir entregar valor,medo
+Preocupado com a estabilidade do serviço,medo
+Tenho medo de não ter visibilidade,medo
+A dependência crítica me deixa tenso,medo
+Estou apreensivo com a revisão,medo
+Temo ser cobrado por algo fora do meu controle,medo
+Senti insegurança com a decisão tomada,medo

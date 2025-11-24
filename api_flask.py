@@ -118,7 +118,7 @@ def preprocessar_texto(texto: str) -> str:
 class EmotionService:
     """
     Serviço de inferência: carrega vetorizador e dois modelos (emoção + sentimento)
-    para expor métodos de classificação usados pela API REST da FIAP.
+    para expor métodos de classificação usados pela API REST.
     """
 
     def __init__(self, caminho_modelos: Path) -> None:
@@ -161,18 +161,14 @@ class EmotionService:
                 emocao_prevista, sentimento_previsto, sentimento_scores
             )
             emocao_scores = emo_probs[idx]
+            
             resultado_sentimento = {
                 "texto": texto,
                 "emocao": emocao_prevista,
-                "emotion": emocao_prevista,
                 "sentimento": sentimento_final,
-                "sentiment": sentimento_final,
                 "sentimento_fonte": sentimento_fonte,
-                "sentiment_source": sentimento_fonte,
                 "emocao_scores": emocao_scores,
-                "emotion_scores": emocao_scores,
                 "sentimento_scores": sentimento_scores,
-                "sentiment_scores": sentimento_scores,
             }
             saida.append(resultado_sentimento)
         return saida
@@ -217,8 +213,11 @@ class EmotionService:
                 except ValueError:
                     data_iso = None
 
-            registro = {**res, "timestamp": timestamp, "data": data_iso}
-            registro["date"] = registro["data"]
+            registro = {
+                **res,
+                "timestamp": timestamp,
+                "data": data_iso
+            }
             mensagens_enriquecidas.append(registro)
 
             emocao_total[res["emocao"]] += 1
@@ -236,9 +235,6 @@ class EmotionService:
                 "sentimento_total": dict(sentimento_total),
             },
         }
-        # Aliases expected by alguns clientes CLI em inglês.
-        resultado["messages"] = resultado["mensagens"]
-        resultado["summary"] = resultado["resumo"]
         return resultado
 
 
@@ -247,7 +243,6 @@ def criar_app() -> Flask:
     garantir_modelo(caminho)
     service = EmotionService(caminho)
     app = Flask(__name__)
-    # API REST exigida pela entrega FIAP (healthcheck, classificação e análise de conversas).
 
     @app.get("/health")
     def health():
